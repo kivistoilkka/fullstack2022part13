@@ -44,6 +44,7 @@ const main = async () => {
     blogStrings.forEach((blog) => {
       console.log(blog)
     })
+    sequelize.close()
   } catch (error) {
     console.error('Unable to connect to the database:', error)
   }
