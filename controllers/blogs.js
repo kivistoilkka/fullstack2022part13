@@ -8,13 +8,9 @@ router.get('/', async (_req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  try {
-    console.log(req.body)
-    const blog = await Blog.create(req.body)
-    res.json(blog)
-  } catch (error) {
-    return res.status(400).json({ error })
-  }
+  console.log(req.body)
+  const blog = await Blog.create(req.body)
+  res.json(blog)
 })
 
 const blogFinder = async (req, _res, next) => {

@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "author": "Martin Fowler",
+  "url": "https://www.martinfowler.com/articles/newMethodology.html"
+}
