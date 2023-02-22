@@ -1,5 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGZvby5iYXIiLCJpZCI6NCwiaWF0IjoxNjc3MDg4OTY2fQ.QTuivpHGRtqZKhfO1HYvzl-_sf4bsE-Ce-87CYDHjj8
 
 {
   "author": "Martin Fowler",
