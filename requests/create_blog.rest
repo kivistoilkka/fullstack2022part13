@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGZvby5iYXIiLCJpZCI6NCwiaWF0IjoxNjc3MDg4OTY2fQ.QTuivpHGRtqZKhfO1HYvzl-_sf4bsE-Ce-87CYDHjj8
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGZvby5iYXIiLCJpZCI6MSwiaWF0IjoxNjc3Nzg4NDE1fQ.DRpr1pbtoi3AyDuu5ZRfy60tI9BLsdqxNDuDi6U-x3E
 
 {
   "title": "The New Methodology",

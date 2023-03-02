@@ -10,6 +10,10 @@ const errorHandler = (error, _req, res, next) => {
     return res.status(400).send({ error: errorMessages })
   } else if (error.name == 'SequelizeDatabaseError') {
     return res.status(400).send({ error: error.message })
+  } else if (error.name == 'TypeError') {
+    return res.status(400).send({ error: error.message })
+  } else if (error.name == 'Error') {
+    return res.status(400).send({ error: error.message })
   } else next(error)
 }
 
