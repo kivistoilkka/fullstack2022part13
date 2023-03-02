@@ -67,8 +67,9 @@ router.delete('/:id', blogFinder, tokenExtractor, async (req, res) => {
       res
         .status(401)
         .json({ error: 'only the user who added the blog can delete it' })
+    } else {
+      await req.blog.destroy()
     }
-    await req.blog.destroy()
   }
   res.status(204).end()
 })
