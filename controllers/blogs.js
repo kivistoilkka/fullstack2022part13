@@ -2,7 +2,11 @@ const { Op } = require('sequelize')
 const router = require('express').Router()
 
 const { Blog, User } = require('../models')
-const { tokenExtractor } = require('../util/middleware')
+const {
+  tokenExtractor,
+  userFinder,
+  activeChecker,
+} = require('../util/middleware')
 
 router.get('/', async (req, res) => {
   const where = {}
@@ -34,29 +38,41 @@ router.get('/', async (req, res) => {
   res.json(blogs)
 })
 
-router.post('/', tokenExtractor, async (req, res) => {
-  const user = await User.findByPk(req.decodedToken.id)
-  const blog = await Blog.create({ ...req.body, userId: user.id })
-  res.json(blog)
-})
+router.post(
+  '/',
+  tokenExtractor,
+  userFinder,
+  activeChecker,
+  async (req, res) => {
+    const blog = await Blog.create({ ...req.body, userId: req.user.id })
+    res.json(blog)
+  }
+)
 
 const blogFinder = async (req, _res, next) => {
   req.blog = await Blog.findByPk(req.params.id)
   next()
 }
 
-router.delete('/:id', blogFinder, tokenExtractor, async (req, res) => {
-  if (req.blog) {
-    if (!(req.decodedToken.id === req.blog.userId)) {
-      res
-        .status(401)
-        .json({ error: 'only the user who added the blog can delete it' })
-    } else {
-      await req.blog.destroy()
+router.delete(
+  '/:id',
+  blogFinder,
+  tokenExtractor,
+  userFinder,
+  activeChecker,
+  async (req, res) => {
+    if (req.blog) {
+      if (!(req.decodedToken.id === req.blog.userId)) {
+        res
+          .status(401)
+          .json({ error: 'only the user who added the blog can delete it' })
+      } else {
+        await req.blog.destroy()
+      }
     }
+    res.status(204).end()
   }
-  res.status(204).end()
-})
+)
 
 router.put('/:id', blogFinder, async (req, res) => {
   if (req.blog) {

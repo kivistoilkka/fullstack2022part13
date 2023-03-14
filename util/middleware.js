@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config')
+const { User } = require('../models')
 
 const unknownEndpoint = (_req, res) => {
   res.status(404).send({ error: 'unknown endpoint' })
@@ -35,4 +36,27 @@ const tokenExtractor = (req, res, next) => {
   next()
 }
 
-module.exports = { unknownEndpoint, errorHandler, tokenExtractor }
+const userFinder = async (req, res, next) => {
+  req.user = await User.findByPk(req.decodedToken.id)
+  next()
+}
+
+const activeChecker = async (req, res, next) => {
+  const user = req.user
+
+  if (user.disabled) {
+    return res.status(401).json({
+      error: 'account disabled, please contact admin',
+    })
+  }
+
+  next()
+}
+
+module.exports = {
+  unknownEndpoint,
+  errorHandler,
+  tokenExtractor,
+  userFinder,
+  activeChecker,
+}
