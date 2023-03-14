@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config')
-const { User } = require('../models')
+const { User, ActiveSession } = require('../models')
 
 const unknownEndpoint = (_req, res) => {
   res.status(404).send({ error: 'unknown endpoint' })
@@ -47,6 +47,24 @@ const activeChecker = async (req, res, next) => {
   if (user.disabled) {
     return res.status(401).json({
       error: 'account disabled, please contact admin',
+    })
+  }
+
+  const session = await ActiveSession.findOne({
+    where: {
+      userId: user.id,
+    },
+  })
+
+  if (!session) {
+    return res.status(401).json({
+      error: 'please log in',
+    })
+  }
+
+  if (session.token !== req.get('authorization').substring(7)) {
+    return res.status(401).json({
+      error: 'token expired, please log in',
     })
   }
 
