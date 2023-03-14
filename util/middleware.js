@@ -38,6 +38,11 @@ const tokenExtractor = (req, res, next) => {
 
 const userFinder = async (req, res, next) => {
   req.user = await User.findByPk(req.decodedToken.id)
+  if (!req.user) {
+    return res.status(401).json({
+      error: 'user matching the token not found',
+    })
+  }
   next()
 }
 
